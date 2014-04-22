@@ -1,0 +1,73 @@
+Kartenstile:
+  auf shapefile für Hintergrund: lane and road attributes
+    auf zu bearbeitende wege hw=motorw und lanes=6 setzen
+  
+  oberflächen:
+    "surface" zeigt als text in der linienmitte an
+    "surface - data entry" zeigt als Outline an - nützlich
+
+  cycleways:
+    stil "cycleways"
+
+filter:
+  auswahl ersetzen
+  ersten beiden hackerl
+  landuse OR leisure OR natural=wood OR natural=scrub
+
+
+tagging-schema für ways, die teil einer relation sind:
+  befestigte straßen:
+    wenn radspuren (aufgemalt) links/rechts: cycleway=lane / cycleway:left=lane
+siehe http://wiki.openstreetmap.org/wiki/Key:cycleway
+
+  bei tracks/paths/footways/service bicycle
+    bicycle=yes setzen
+    segregated yes/no wenn bekannt (eventuell)
+    surface= (S1Art)
+      DE_A = asphalt
+      DE_SCH = gravel
+      DE_B = concrete
+      DE_S (sonstiges) = wood/unpaved
+siehe http://wiki.openstreetmap.org/wiki/Surface
+    
+  in die relation kommt folgendes:
+    type=route
+    route=bicycle
+    operator=Land Vorarlberg
+    name=* ( <= Fahrbahnoberbau:name )
+    ref=* ( <= Fahrbahnoberbau:StrKey )
+    network= icn/ncn/rcn/lcn (unbekannt, derweil weglassen)
+      icn (international) 
+      ncn (national) 
+      rcn (regional)
+      lcn (local)
+    network:vogis=OEHR/LR/LROEHR ( <= Kategorie)
+    source=Land Vorarlberg
+
+siehe http://wiki.openstreetmap.org/wiki/Cycle_routes
+
+unfertige relationen mit fixme=unfertig, in arbeit by $mapper
+
+eigene WikiProject Austria seite anlegen
+  verlinken auf http://wiki.openstreetmap.org/wiki/WikiProject_Austria/Radwege#Radwege_in_Vorarlberg
+                http://wiki.openstreetmap.org/wiki/Vorarlberg#Projekte
+mail an talk-at / vorarlberger ML
+shapes auf github laden
+
+workflow:
+  in der Quelldatei:
+  zu importierendes Teilstück wählen,
+    RMT auf ref, "nach key/value suchen" - dann bekommt man alle stücke
+    tags "highway=motorway" und "lanes=6" setzen (nur ums grafisch anders darzustellen)
+    kartenstil "lane and road attributes" aktivieren, es sollten die zu importierenden dinge sehr breit dargestellt werden
+      ev gleich die "asphalt" auf lanes=3 setzen, und die unpaved auf 6 lassen?
+  auf layer mit vorhanden osm-daten wechseln (oder vorher osm-daten downloaden)
+    jetzt sollte man dunkel grau im Hintergrund die ausgewählten radwege der Quell-Datei sehen
+    filter anwenden! 
+  neue relation anlegen, tags wie oben (teiweise von Quell-Datei kopierbar)
+  * alle Wege so teilen, damit sie in die Relation passen
+  * alle Wege zur Relation hinzufügen
+  * auf allen tracks/paths/footways/service bicycle=yes setzen
+  * auf allen tracks/paths/footways/service die surface-tags hinzufügen
+session abspeichern, hochladen
+  beim öffnen neuer session vor dem anfangen die datenebene updaten
